@@ -9,19 +9,22 @@ import java.lang.Math;
 
 import java.util.Collection;
 import java.util.UUID;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class FindLoc {
+    private Server server;
     private RandomTeleport tpr;
     int minRange = 1000; //Minimum distance between old and new location
     int maxRange = 2000; //Maximum distance between old and new location
-    int minDistance = 500; //Minimum distance between the player using tpr and other players
-    private Location NewLocFin;
+    int minDistanceSqrd = 2500; //Minimum distance squared between the player using tpr and other players (using sqrt takes more computing power than necessary)
+    Location NewLoc;
     int NumberOfPlayers;
-    Object[][] NamesAndLocations; //2D array: first row contains list of Players, second row their Locations
-    Player[] PlayerArray = NamesAndLocations[0];
-    public void getPlayersThisWorld(Server server){
-        NamesAndLocations[0][this.NumberOfPlayers] = new Player[this.NumberOfPlayers];
+    Player[] Names; //Array containing Players
+    Location[] Locations; //Array containing player locations
+
+    public void getPlayersThisWorld(){
         String UserName = null;
         //Get a list of the players in this world:
         Collection UserListCol = server.getOnlinePlayers(); //Get player names
@@ -31,18 +34,49 @@ public class FindLoc {
         this.NumberOfPlayers = UserList.length;
         for (int i = 0; i < this.NumberOfPlayers; i++){
             UserName = UserList[i].toString(); //User's name as string, in order to use in getPlayer()
-            this.NamesAndLocations[0][i] = server.getPlayer(UserName);
-            this.NamesAndLocations[1][i] = server.getPlayer(UserName).getLocation();
+            this.Names[i] = server.getPlayer(UserName);
+            this.Locations[i] = server.getPlayer(UserName).getLocation();
         }
     }
 
-    public void getRandLoc(Location PlayerLoc){
+    //Gets new random location that is at a minimum distance (defined through minDistanceSqrd) from other players:
+    public void getRandLoc(){
+        FindLoc findLoc = new FindLoc();
+        findLoc.getPlayersThisWorld();
+
         Location center = tpr.getCenter();
-        CompletableFuture<Location> NewLoc = tpr.getRandomLocation(center,minRange,maxRange);
+        CompletableFuture<Location> future;
+        future = tpr.getRandomLocation(center,minRange,maxRange);
+        try {
+            this.NewLoc = future.get();
+        } catch (ExecutionException e){
+            e.getStackTrace();
+            System.out.print("ExecutionException in getRandLoc.");
+        } catch (InterruptedException e){
+            e.getStackTrace();
+            System.out.print("InterruptedException in getRandLoc.");
+        } catch (CancellationException e){
+            e.getStackTrace();
+            System.out.print("CancellationException in getRandLoc.");
+        }
         // Check if there are any other players near the new location:
-        for (int i = 0; i < NamesAndLocations[1].length; i++){
-            double dist = NamesAndLocations[1][i].d
-            if ()
+        for (int i = 0; i < this.NumberOfPlayers; i++){
+            double dist = Locations[i].distanceSquared(this.NewLoc);
+            if (dist < minDistanceSqrd){
+                future = tpr.getRandomLocation(center,minRange,maxRange);
+                try {
+                    this.NewLoc = future.get();
+                } catch (ExecutionException e){
+                    e.getStackTrace();
+                    System.out.print("ExecutionException in getRandLoc.");
+                } catch (InterruptedException e){
+                    e.getStackTrace();
+                    System.out.print("InterruptedException in getRandLoc.");
+                } catch (CancellationException e){
+                    e.getStackTrace();
+                    System.out.print("CancellationException in getRandLoc.");
+                }
+            }
         }
     }
 }
