@@ -1,0 +1,4 @@
+name: ImprovedTPR
+version: '${project.version}'
+main: me.cedric.improvedtpr.ImprovedTPR
+api-version: 1.19
