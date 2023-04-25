@@ -24,6 +24,25 @@ public class FindLoc {
     Player[] Names; //Array containing Players
     Location[] Locations; //Array containing player locations
 
+    private Location convertToLoc(CompletableFuture<Location> future){
+        Location NewLoc;
+        try {
+            NewLoc = future.get();
+        } catch (ExecutionException e){
+            e.getStackTrace();
+            System.out.print("ExecutionException in getRandLoc");
+            NewLoc = null;
+        } catch (InterruptedException e){
+            e.getStackTrace();
+            System.out.print("InterruptedException in getRandLoc");
+            NewLoc = null;
+        } catch (CancellationException e){
+            e.getStackTrace();
+            System.out.print("CancellationException in getRandLoc");
+            NewLoc = null;
+        }
+        return NewLoc;
+    }
     public void getPlayersThisWorld(){
         String UserName = null;
         //Get a list of the players in this world:
@@ -41,41 +60,20 @@ public class FindLoc {
 
     //Gets new random location that is at a minimum distance (defined through minDistanceSqrd) from other players:
     public void getRandLoc(){
-        FindLoc findLoc = new FindLoc();
+        FindLoc findLoc = new FindLoc(); //Initialize class
+
         findLoc.getPlayersThisWorld();
 
         Location center = tpr.getCenter();
         CompletableFuture<Location> future;
         future = tpr.getRandomLocation(center,minRange,maxRange);
-        try {
-            this.NewLoc = future.get();
-        } catch (ExecutionException e){
-            e.getStackTrace();
-            System.out.print("ExecutionException in getRandLoc.");
-        } catch (InterruptedException e){
-            e.getStackTrace();
-            System.out.print("InterruptedException in getRandLoc.");
-        } catch (CancellationException e){
-            e.getStackTrace();
-            System.out.print("CancellationException in getRandLoc.");
-        }
+        this.NewLoc = findLoc.convertToLoc(future);
         // Check if there are any other players near the new location:
         for (int i = 0; i < this.NumberOfPlayers; i++){
             double dist = Locations[i].distanceSquared(this.NewLoc);
             if (dist < minDistanceSqrd){
                 future = tpr.getRandomLocation(center,minRange,maxRange);
-                try {
-                    this.NewLoc = future.get();
-                } catch (ExecutionException e){
-                    e.getStackTrace();
-                    System.out.print("ExecutionException in getRandLoc.");
-                } catch (InterruptedException e){
-                    e.getStackTrace();
-                    System.out.print("InterruptedException in getRandLoc.");
-                } catch (CancellationException e){
-                    e.getStackTrace();
-                    System.out.print("CancellationException in getRandLoc.");
-                }
+                this.NewLoc = findLoc.convertToLoc(future);
             }
         }
     }

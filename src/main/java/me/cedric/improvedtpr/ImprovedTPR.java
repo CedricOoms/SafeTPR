@@ -10,6 +10,7 @@ public final class ImprovedTPR extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+        getServer().getPluginManager().registerEvents(new PlayerSignInteractListener(),this);
 
     }
 

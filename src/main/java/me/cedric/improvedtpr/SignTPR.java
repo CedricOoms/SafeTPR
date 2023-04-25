@@ -1,8 +1,10 @@
 package me.cedric.improvedtpr;
 
+import com.earth2me.essentials.AsyncTeleport;
 import com.earth2me.essentials.ChargeException;
 import com.earth2me.essentials.Trade;
 import com.earth2me.essentials.User;
+import com.earth2me.essentials.api.IAsyncTeleport;
 import com.earth2me.essentials.signs.EssentialsSign;
 import com.earth2me.essentials.signs.SignException;
 import net.ess3.api.IEssentials;
@@ -14,8 +16,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static com.earth2me.essentials.I18n.tl;
 
-public class SignTPR extends EssentialsSign{
-    FindLoc findLoc = new FindLoc();
+public class SignTPR extends EssentialsSign {
     public SignTPR() {
         super("TPR");
     }
@@ -32,18 +33,7 @@ public class SignTPR extends EssentialsSign{
 
     @Override
     protected boolean onSignInteract(final ISign sign, final User player, final String username, final IEssentials ess) throws SignException, ChargeException {
-        final String group = sign.getLine(2);
-
-        if (!group.isEmpty()) {
-            if (!"§2Everyone".equals(group) && !player.inGroup(group)) {
-                throw new SignException(tl("warpUsePermission"));
-            }
-        } else {
-            if (ess.getSettings().getPerWarpPermission()) {
-                throw new SignException(tl("warpUsePermission"));
-            }
-        }
-
+        FindLoc findLoc = new FindLoc();
         final Trade charge = getTrade(sign, 3, ess);
         final CompletableFuture<Boolean> future = new CompletableFuture<>();
         //Teleport player to random location:
