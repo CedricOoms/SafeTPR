@@ -15,27 +15,15 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.block.Sign;
 
 public class PlayerSignInteractListener implements Listener {
-    Block RegisteredBlock;
-    SignTPR signTPR = new SignTPR();
-    IEssentials ess;
-    EssentialsSign.ISign iSign;
-
     @EventHandler
     public void onPlayerClicksSign(PlayerInteractEvent event){
         Player p = event.getPlayer();
-        String pString = p.toString();
-        User user = new User(p,ess);
-        RegisteredBlock = event.getClickedBlock();
+        Block RegisteredBlock = event.getClickedBlock();
         if (RegisteredBlock instanceof Sign){
-            String FirstLine = ((Sign) RegisteredBlock).getLine(0);
-            if (FirstLine == "TPR") {
-                try {
-                    signTPR.onSignInteract(iSign, user, pString, ess);
-                } catch (SignException e) {
-                    System.out.print("SignException");
-                } catch (ChargeException e){
-                    System.out.print("ChargeException");
-                }
+            String FirstLine = String.valueOf(((Sign) RegisteredBlock).line(0));
+            if (FirstLine == "[TPR]") {
+                FindLoc findLoc = new FindLoc();
+                p.teleport(findLoc.getRandLoc());
             }
         }
     }

@@ -59,7 +59,7 @@ public class FindLoc {
     }
 
     //Gets new random location that is at a minimum distance (defined through minDistanceSqrd) from other players:
-    public void getRandLoc(){
+    public Location getRandLoc(){
         FindLoc findLoc = new FindLoc(); //Initialize class
 
         findLoc.getPlayersThisWorld();
@@ -76,6 +76,7 @@ public class FindLoc {
                 this.NewLoc = findLoc.convertToLoc(future);
             }
         }
+        return this.NewLoc;
     }
 }
 
