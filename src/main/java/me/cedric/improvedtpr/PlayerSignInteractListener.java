@@ -8,6 +8,7 @@ import com.earth2me.essentials.signs.SignException;
 import net.ess3.api.IEssentials;
 import net.kyori.adventure.text.Component;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,9 +22,10 @@ public class PlayerSignInteractListener implements Listener {
     public void onPlayerClicksSign(PlayerInteractEvent event){
         Player p = event.getPlayer();
         Block RegisteredBlock = event.getClickedBlock();
-        if (RegisteredBlock instanceof Sign){
+        if (RegisteredBlock instanceof org.bukkit.block.Sign){
             String FirstLine = String.valueOf(((Sign) RegisteredBlock).line(0));
-            if (FirstLine == "[TPR]") {
+            if (FirstLine.equalsIgnoreCase("[TPR]")) {
+                p.sendPlainMessage("Teleporting to random location now!");
                 FindLoc findLoc = new FindLoc();
                 p.teleport(findLoc.getRandLoc());
             }
