@@ -22,7 +22,9 @@ public class PlayerSignInteractListener implements Listener {
     public void onPlayerClicksSign(PlayerInteractEvent event){
         Player p = event.getPlayer();
         Block RegisteredBlock = event.getClickedBlock();
+        p.sendPlainMessage("You clicked somehting");
         if (RegisteredBlock instanceof org.bukkit.block.Sign){
+            p.sendPlainMessage("It is a sign");
             String FirstLine = String.valueOf(((Sign) RegisteredBlock).line(0));
             if (FirstLine.equalsIgnoreCase("[TPR]")) {
                 p.sendPlainMessage("Teleporting to random location now!");
