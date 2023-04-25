@@ -11,14 +11,16 @@ import org.bukkit.Color;
 import net.kyori.adventure.text.Component;
 
 public class PlayerCreatesSignListener implements Listener {
+    Component text= Component.text("[TPR]");
     @EventHandler
     public void OnPlayerCreatesSign(BlockPlaceEvent event){
         Player p = event.getPlayer();
         Block PlacedBlock = event.getBlock();
         if (PlacedBlock instanceof Sign){
             Sign sign = (Sign) PlacedBlock;
-            String FirstLine = String.valueOf(sign.line(0));
-            if (FirstLine == "[TPR]"){
+            p.sendPlainMessage("It's a sign bro");
+            Component FirstLine = sign.line(0);
+            if ( text == FirstLine ){
                 //sign.line(0,Color.BLUE + "[TPR]");
                 p.sendPlainMessage("Successfully made TPR sign!");
             }
