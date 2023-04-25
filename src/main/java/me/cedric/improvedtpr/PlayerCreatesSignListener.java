@@ -15,7 +15,6 @@ public class PlayerCreatesSignListener implements Listener {
         p.sendPlainMessage("It worked!");
         Component FirstLine = event.line(0);
         if ( FirstLine.equals(text) ){
-            //sign.line(0,Color.BLUE + "[TPR]");
             p.sendPlainMessage("Successfully made TPR sign!");
             }
 
