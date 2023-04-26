@@ -1,4 +1,4 @@
-# SafeTPR by Cedric
+# SafeTPR Minecraft Plugin
 Minecraft plugin that implements a random teleporter sign which avoids teleporting players near other players or hostile mobs.
 
 # Usage
