@@ -1,4 +1,4 @@
-package me.cedric.SafeTPR;
+package me.cedric.safetpr;
 
 import org.bukkit.plugin.java.JavaPlugin;
 

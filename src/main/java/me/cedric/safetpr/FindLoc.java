@@ -1,4 +1,4 @@
-package me.cedric.SafeTPR;
+package me.cedric.safetpr;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.Collection;

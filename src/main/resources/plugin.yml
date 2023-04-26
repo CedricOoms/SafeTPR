@@ -1,4 +1,4 @@
 name: SafeTPR
 version: '${project.version}'
-main: me.cedric.improvedtpr.SafeTPR
+main: me.cedric.safetpr.SafeTPR
 api-version: 1.19
