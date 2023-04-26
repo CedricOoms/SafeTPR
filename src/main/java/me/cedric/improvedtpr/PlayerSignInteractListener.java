@@ -1,35 +1,35 @@
 package me.cedric.improvedtpr;
 
-import com.earth2me.essentials.ChargeException;
-import com.earth2me.essentials.Essentials;
-import com.earth2me.essentials.User;
-import com.earth2me.essentials.signs.EssentialsSign;
-import com.earth2me.essentials.signs.SignException;
-import net.ess3.api.IEssentials;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.block.Sign;
 
-public class PlayerSignInteractListener implements Listener {
-    Component text= Component.text("[TPR]");
+public class PlayerSignInteractListener implements Listener{
+    Component text = Component.text("[TPR]");
+    Component TpText = Component.text("Teleporting to random location now!");
+    Component SuccessText = Component.text("You have been teleported to a random new location, no other players close-by. Good luck!");
+    Style style = Style.style(TextColor.color(0x841));
+    Style SuccessTextStyle = Style.style(TextColor.color(0x640000));
     @EventHandler
     public void onPlayerClicksSign(PlayerInteractEvent event){
         Player p = event.getPlayer();
         Block RegisteredBlock = event.getClickedBlock();
-        p.sendPlainMessage("You clicked somehting");
-        if (RegisteredBlock instanceof org.bukkit.block.Sign){
-            p.sendPlainMessage("It is a sign");
-            String FirstLine = String.valueOf(((Sign) RegisteredBlock).line(0));
-            if (FirstLine.equalsIgnoreCase("[TPR]")) {
-                p.sendPlainMessage("Teleporting to random location now!");
+        World world = p.getWorld();
+        if ( RegisteredBlock.getType().toString() == "OAK_WALL_SIGN" || RegisteredBlock.getType().toString() == "OAK_SIGN"){
+            Sign sign = (Sign) RegisteredBlock.getState();
+            Component FirstLine = sign.line(0);
+            if (FirstLine.equals(text.style(style))) {
+                p.sendMessage(TpText.style(style));
                 FindLoc findLoc = new FindLoc();
-                p.teleport(findLoc.getRandLoc());
+                p.teleport(findLoc.getRandLoc(p,world));
+                p.sendMessage(SuccessText.style(SuccessTextStyle));
             }
         }
     }

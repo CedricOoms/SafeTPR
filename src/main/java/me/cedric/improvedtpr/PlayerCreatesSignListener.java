@@ -13,17 +13,16 @@ import org.bukkit.event.block.SignChangeEvent;
 public class PlayerCreatesSignListener implements Listener {
     RGBLike rgb;
     //int blue = rgb.blue();
-    //Style style = Style.style(TextColor.color(blue));
-    Component text= Component.text("[TPR]");
+    Style style = Style.style(TextColor.color(0x841));
+    Component text = Component.text("[TPR]");
+    Component SuccessText = Component.text("Successfully made a TPR sign!");
     @EventHandler
     public void OnPlayerCreatesSign(SignChangeEvent event){
         Player p = event.getPlayer();
-        p.sendPlainMessage("It worked!");
         Component FirstLine = event.line(0);
         if ( FirstLine.equals(text) ){
-            p.sendPlainMessage("You did it!");
-            //event.line(0,text.style(style)); //Sets [TPR] to blue on the sign
-            p.sendPlainMessage("Successfully made TPR sign!");
+            event.line(0,text.style(style)); //Sets [TPR] to blue on the sign
+            p.sendMessage(SuccessText.style(style));
             }
     }
 }
