@@ -1,8 +1,7 @@
-package me.cedric.improvedtpr;
+package me.cedric.SafeTPR;
 
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.util.RGBLike;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,11 +10,9 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.event.block.SignChangeEvent;
 
 public class PlayerCreatesSignListener implements Listener {
-    RGBLike rgb;
-    //int blue = rgb.blue();
-    Style style = Style.style(TextColor.color(0x841));
+    Style style = Style.style(TextColor.color(0xBF7));
     Component text = Component.text("[TPR]");
-    Component SuccessText = Component.text("Successfully made a TPR sign!");
+    Component SuccessText = Component.text("You have successfully made a TPR sign!");
     @EventHandler
     public void OnPlayerCreatesSign(SignChangeEvent event){
         Player p = event.getPlayer();
