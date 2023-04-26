@@ -8,10 +8,12 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
+import org.jetbrains.annotations.Nullable;
 
 
 public class FindLoc {
+    int minDistanceMonsters = 50;
     int minRange = 1000; //Minimum distance between old and new location
     int maxRange = 2000; //Maximum distance between old and new location
     int minDistance = 500;
@@ -66,8 +68,8 @@ public class FindLoc {
         while (i < world.getPlayerCount()){
             i++;
             Collection<Player> NearbyPlayers = world.getNearbyPlayers(this.NewLoc,minDistance); //Collection of players within radius of minDistance of the new location
-            if ( !NearbyPlayers.isEmpty() ){
-                System.out.print("Looking for random location...");
+            Collection<Entity> NearbyMonsters = world.getNearbyEntitiesByType(Enemy.class,this.NewLoc,this.minDistanceMonsters);
+            if ( !NearbyPlayers.isEmpty() && !NearbyMonsters.isEmpty() ){
                 //There are players nearby; find new location:
                 this.NewLoc = findLoc.getRandomLocation(player.getLocation(),minRange,maxRange,world);
             }
