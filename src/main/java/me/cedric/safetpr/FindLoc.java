@@ -18,7 +18,7 @@ public class FindLoc{
     int minDistanceMonsters;
 
     public void FindLoc(){
-        Plugin plugin = SafeTPR.getPlugin(SafeTPR.class);
+        Plugin plugin = new SafeTPR();
         minRange = plugin.getConfig().getInt("minRange"); //Minimum distance between old and new location
         maxRange = plugin.getConfig().getInt("maxRange"); //Maximum distance between old and new location
         minDistanceOtherPlayers = plugin.getConfig().getInt("minDistanceOtherPlayers"); //Minimum distance between new location and other players
