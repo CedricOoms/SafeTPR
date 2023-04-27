@@ -2,22 +2,28 @@ package me.cedric.safetpr;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.Collection;
-
+import org.bukkit.plugin.Plugin;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
-import org.jetbrains.annotations.Nullable;
 
-
-public class FindLoc {
-    int minDistanceMonsters = 50;
-    int minRange = 1000; //Minimum distance between old and new location
-    int maxRange = 2000; //Maximum distance between old and new location
-    int minDistance = 500;
+public class FindLoc{
     Location NewLoc;
+    int minRange;
+    int maxRange;
+    int minDistanceOtherPlayers;
+    int minDistanceMonsters;
+
+    public void FindLoc(){
+        Plugin plugin = SafeTPR.getPlugin(SafeTPR.class);
+        minRange = plugin.getConfig().getInt("minRange"); //Minimum distance between old and new location
+        maxRange = plugin.getConfig().getInt("maxRange"); //Maximum distance between old and new location
+        minDistanceOtherPlayers = plugin.getConfig().getInt("minDistanceOtherPlayers"); //Minimum distance between new location and other players
+        minDistanceMonsters = plugin.getConfig().getInt("minDistanceMonsters");
+    }
 
     private boolean isValidLocation(Location loc){
         boolean isValid;
@@ -67,7 +73,7 @@ public class FindLoc {
         int i = 0;
         while (i < world.getPlayerCount()){
             i++;
-            Collection<Player> NearbyPlayers = world.getNearbyPlayers(this.NewLoc,minDistance); //Collection of players within radius of minDistance of the new location
+            Collection<Player> NearbyPlayers = world.getNearbyPlayers(this.NewLoc,minDistanceOtherPlayers); //Collection of players within radius of minDistance of the new location
             Collection<Entity> NearbyMonsters = world.getNearbyEntitiesByType(Enemy.class,this.NewLoc,this.minDistanceMonsters);
             if ( !NearbyPlayers.isEmpty() && !NearbyMonsters.isEmpty() ){
                 //There are players nearby; find new location:

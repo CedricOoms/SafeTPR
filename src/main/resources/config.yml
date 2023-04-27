@@ -1,0 +1,4 @@
+minRange: 500
+maxRange: 1000
+minDistanceOtherPlayers: 250
+minDistanceMonsters: 50
